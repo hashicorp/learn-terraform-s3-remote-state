@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 3.50.0"
-    }
-  }
-}
-
 provider "aws" {
   region = "us-west-1"
 }
@@ -18,9 +9,9 @@ resource "aws_s3_bucket" "terraform_state" {
     enabled = true
   }
 
-  lifecycle {
-    prevent_destroy = true
-  }
+  // lifecycle {
+  //   prevent_destroy = true
+  // }
 }
 
 resource "aws_dynamodb_table" "terraform_state_lock" {
@@ -33,12 +24,4 @@ resource "aws_dynamodb_table" "terraform_state_lock" {
     name = "LockID"
     type = "S"
   }
-}
-
-output "s3_bucket_name" {
-  value = aws_s3_bucket.terraform_state.id
-}
-
-output "dynamodb_endpoint" {
-  value = aws_dynamodb_table.terraform_state_lock.name
 }
